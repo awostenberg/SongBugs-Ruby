@@ -1,0 +1,15 @@
+== Please note:
+This project is not complete yet, but most of this file is written as if it is.
+
+== What is this?
+This is a very simple game called SongBugs. In it you can place small green bugs and colorful
+tiles on the board, to form tracks. After that, when the the play button is pressed, you will
+hear your art in the form of a song (the tiles are color-coded to a specific note)!
+
+== Why did I make this?
+I created this because I needed a good project to test my Ruby gaming/graphics library. And
+I thought this would be perfect; it stretches my library in many aspects: sound playing and
+event handling, for instance. I have actually written SongBugs a few times before: Once when
+I first learned to program, and another time I wrote it in Ruby/Gosu:
+(http://www.libgosu.org/cgi-bin/mwf/topic_show.pl?tid=610). Well, this will be the third time!
+Anyway, I hope you learn something at all from this small game, and thanks!
