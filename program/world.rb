@@ -1,3 +1,4 @@
+require 'program/button'
 require 'program/main_menu'
 
 # This class basically controlls everything that goes on.
@@ -14,9 +15,10 @@ class World
     if @mode == :main_menu
       # Initialize the main menu if it doesn't already exist.
       if @main_menu.nil?
-        @main_menu = MainMenu.new(@window)
+        @main_menu = MainMenu.new(@window, self)
       end
       @main_menu.tick
+    elsif @mode == :play
     end
   end
 
@@ -24,4 +26,11 @@ class World
   def fill(color)
     @window.fill_with(color)
   end
+
+  # Set the current game mode.
+  def set_mode(new)
+    @mode = new
+  end
+
+  alias switch_mode set_mode
 end

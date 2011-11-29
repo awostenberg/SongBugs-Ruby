@@ -14,6 +14,7 @@ class Button
     @image = @normal
     @mouse_position = Point[0, 0]
     @text_position = (@center - Point[width, height])
+    @being_pressed = false
     whenever Rubydraw::Events::MouseMove, window do |event|
       @mouse_position = event.position
     end
@@ -29,15 +30,19 @@ class Button
         when Rubydraw::Ms::Left
           if mouse_inside?
             @image = @pressed
+            @being_pressed = true
           end
       end
     end
     whenever Rubydraw::Events::MouseReleased, window do |event|
       case event.button
         when Rubydraw::Ms::Left
+          if @being_pressed
+            # Execute the block that whoever created me wanted to be run.
+            puts @block.call
+          end
           @image = @normal
-          # Execute the block that whoever created me wanted to be run.
-          @block.call
+          @being_pressed = false
       end
     end
   end

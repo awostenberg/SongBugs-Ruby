@@ -10,6 +10,9 @@ class Alignment
   end
 
   # Returns the position for the given slot.
+  #
+  # The algorithm adds one to @slot_number because it specifies
+  # how many potential slots.
   def [](slot)
     ((@min + @max) / (@slot_num + 1)) * slot
   end
