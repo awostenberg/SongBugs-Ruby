@@ -1,5 +1,6 @@
 require 'program/button'
 require 'program/main_menu'
+require 'program/board'
 
 # This class basically controlls everything that goes on.
 # It will handle the main menu and the board.
@@ -19,6 +20,10 @@ class World
       end
       @main_menu.tick
     elsif @mode == :play
+      if @board.nil?
+        @board = Board.new(@window, self)
+      end
+      @board.tick
     end
   end
 

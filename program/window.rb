@@ -8,7 +8,6 @@ class GameWindow < Rubydraw::Window
     # If you use 0 (for either window width or height, they both work),
     # SDL makes the window as big as it can.
     super(0, 0)
-    self.title = "SongBugs"
     @world = World.new(self)
     whenever Rubydraw::Events::QuitRequest do
       close
@@ -22,6 +21,8 @@ class GameWindow < Rubydraw::Window
   end
 
   def tick
+    time_string = ((Time.now.to_s.split(" "))[0..2]).join(" ")
+    self.title = "SongBugs | #{time_string}"
     @world.tick
   end
 

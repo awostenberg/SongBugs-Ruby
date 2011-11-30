@@ -39,7 +39,7 @@ class Button
         when Rubydraw::Ms::Left
           if @being_pressed
             # Execute the block that whoever created me wanted to be run.
-            puts @block.call
+            @block.call
           end
           @image = @normal
           @being_pressed = false
