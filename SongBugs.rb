@@ -1,3 +1,5 @@
+$LOAD_PATH.unshift(File.dirname(__FILE__))
+
 require 'program/window'
 
-GameWindow.new.show
+SongBugs::GameWindow.new.show
