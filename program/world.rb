@@ -26,6 +26,10 @@ class World
       end
       @board.tick
     end
+
+    unless @mode == :main_menu
+      @main_menu.hide
+    end
   end
 
   # Fill the window with +color+.

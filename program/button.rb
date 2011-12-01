@@ -15,23 +15,27 @@ class Button
     @mouse_position = Point[0, 0]
     @text_position = (@center - Point[width, height])
     @being_pressed = false
-    whenever Rubydraw::Events::MouseMove, window do |event|
-      @mouse_position = event.position
-    end
+    # Assume that the button is not being drawn.
+    @showing = false
     register_actions(window)
   end
 
   # Register actions for when this button is clicked, and
   # when the mouse is released.
   def register_actions(window)
+    whenever Rubydraw::Events::MouseMove, window do |event|
+      @mouse_position = event.position
+    end
     whenever Rubydraw::Events::MousePressed, window do |event|
-      case event.button
-        # Left mouse button
-        when Rubydraw::Ms::Left
-          if mouse_inside?
-            @image = @pressed
-            @being_pressed = true
-          end
+      if showing?
+        case event.button
+          # Left mouse button
+          when Rubydraw::Ms::Left
+            if mouse_inside?
+              @image = @pressed
+              @being_pressed = true
+            end
+        end
       end
     end
     whenever Rubydraw::Events::MouseReleased, window do |event|
@@ -48,6 +52,7 @@ class Button
   end
 
   def tick
+    @showing = true
     @image.draw(@window, position)
     @text.draw(@window, @center - Point[@text.width / 2, @text.height / 2])
   end
@@ -71,5 +76,21 @@ class Button
 
   def height
     @image.height
+  end
+
+  def showing?
+    @showing
+  end
+
+  def showing=(new)
+    @showing = new
+  end
+
+  def show
+    @showing = true
+  end
+
+  def hide
+    @showing = false
   end
 end
