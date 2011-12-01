@@ -8,10 +8,11 @@ class World
   def initialize(window)
     @window = window
     @mode = :main_menu
+    # Set the background color.
+    window.bkg_color = Rubydraw::Color::White
   end
 
   def tick
-    fill(Rubydraw::Color::White)
     # Do everything for the main menu inside here.
     if @mode == :main_menu
       # Initialize the main menu if it doesn't already exist.
