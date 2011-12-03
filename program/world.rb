@@ -9,8 +9,6 @@ module SongBugs
     def initialize(window)
       @window = window
       @mode = :main_menu
-      # Set the background color.
-      window.bkg_color = Rubydraw::Color::White
     end
 
     def tick

@@ -5,11 +5,15 @@ require 'program/world'
 
 module SongBugs
   class GameWindow < Rubydraw::Window
-    def initialize
+    def initialize(size=Point[0, 0])
       # If you use 0 (for either window width or height, they both work),
       # SDL makes the window as big as it can.
-      super(0, 0, false)
+      super(size, [Rubydraw::Flags::Fullscreen], Rubydraw::Color::White)
       @world = World.new(self)
+      register_actions
+    end
+
+    def register_actions
       whenever Rubydraw::Events::QuitRequest do
         close
       end
