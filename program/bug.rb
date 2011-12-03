@@ -15,9 +15,9 @@ module SongBugs
       whenever Rubydraw::Events::KeyPressed, @window do |event|
         angle = 0
         case event.key
-          when Rubydraw::Keys::RightArrow
+          when Rubydraw::Key::RightArrow
             angle = 90
-          when Rubydraw::Keys::LeftArrow
+          when Rubydraw::Key::LeftArrow
             angle = -90
         end
         # Rotate each image.
