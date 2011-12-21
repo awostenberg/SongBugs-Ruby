@@ -8,17 +8,20 @@ module SongBugs
       @middle_i = Rubydraw::Image.new("media/images/p_middle.png")
       @right_i = Rubydraw::Image.new("media/images/p_right.png")
       padding = 20
-      @alignment = Alignment.new(padding, window.width - padding, 2)
+      @alignment = Alignment.new(padding, window.width - padding, 6)
       initialize_children
     end
 
     # Create all the objects in the palette (all the bugs and tiles)
     def initialize_children
       @children = []
-      b = Bug.new(@window, Point[@alignment[1], Point[0, 0]], true)
-      y_pos = (bottom_draw_y + height / 2) - (b.height / 2)
-      b.position = Point[@alignment[1], y_pos]
-      @children << b
+      y_pos = (bottom_draw_y + height / 2) - (TileSize.y / 2)
+      @children << Bug.new(@window, Point[@alignment[1], y_pos], true)
+      @children << Tile.new(@window, Point[@alignment[2], y_pos], :c4, true)
+      @children << Tile.new(@window, Point[@alignment[3], y_pos], :d4, true)
+      @children << Tile.new(@window, Point[@alignment[4], y_pos], :e4, true)
+      @children << Tile.new(@window, Point[@alignment[5], y_pos], :f4, true)
+      @children << Tile.new(@window, Point[@alignment[6], y_pos], :g4, true)
     end
 
     def tick

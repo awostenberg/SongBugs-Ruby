@@ -7,14 +7,15 @@ module SongBugs
         :e4 => [c::Yellow],
         :f4 => [c::LimeGreen],
         :g4 => [c::Green]}
-    def initialize(window, note)
-      @window, @note = window, note
+    def initialize(window, position, note, in_palette=false)
+      @window, @position, @note, @in_palette = window, position, note, in_palette
+      puts @position.class
       color = NoteColorTable[note.to_sym][0]
-      @drawable = Rubydraw::Surface.new(color)
+      @drawable = Rubydraw::Surface.new(TileSize, color)
     end
 
-    def draw(position)
-      @drawable.draw(@window, position)
+    def tick
+      @drawable.draw(@window, @position)
     end
   end
 end

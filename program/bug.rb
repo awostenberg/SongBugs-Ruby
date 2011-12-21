@@ -1,5 +1,11 @@
 module SongBugs
+  # This is how big each tile instance should be, and how big the
+  # bug image should be. Note that nothing will happen if the image
+  # size is different; it will just hang off.
+  TileSize = Point[20, 20]
+
   class Bug
+
     attr_accessor(:position)
 
     def initialize(window, position, in_palette=false)
