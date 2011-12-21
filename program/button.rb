@@ -24,15 +24,12 @@ module SongBugs
     # Register actions for when this button is clicked, and
     # when the mouse is released.
     def register_actions(window)
-      whenever Rubydraw::Events::MouseMove, window do |event|
-        @mouse_position = event.position
-      end
       whenever Rubydraw::Events::MousePressed, window do |event|
         if showing?
           case event.button
             # Left mouse button
             when Rubydraw::Ms::Left
-              if mouse_inside?
+              if cursor.inside?(self.bounding_box)
                 @image = @pressed
                 @being_pressed = true
               end
@@ -63,12 +60,24 @@ module SongBugs
       @center - Point[width / 2, height / 2]
     end
 
+    # Returns a Rubydraw::Rectangle that represents where this
+    # button can be clicked.
     def bounding_box
       Rectangle[position, Point[@image.width, @image.height]]
     end
 
-    def mouse_inside?
-      @mouse_position.inside?(bounding_box)
+    def cursor
+      @window.cursor
+    end
+
+    # Returns the position at which the mouse is.
+    def mouse_position
+      mouse_state.position
+    end
+
+    # Returns the currently pressed button.
+    def mouse_button
+      mouse_state.button
     end
 
     def width

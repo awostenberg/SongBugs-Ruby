@@ -2,14 +2,15 @@ require 'rubygems'
 require 'rubydraw'
 
 require 'program/world'
+require 'program/cursor'
 
 module SongBugs
   class GameWindow < Rubydraw::Window
-    def initialize(size=Point[0, 0])
+    def initialize(size=Point[0, 0], flags=[Rubydraw::Flags::Fullscreen])
       # If you use 0 (for either window width or height, they both work),
-      # SDL makes the window as big as it can.
-      super(size, [Rubydraw::Flags::Fullscreen], Rubydraw::Color::White)
-      @world = World.new(self)
+      # Rubydraw makes the window as big as it can.
+      super(size, [], Rubydraw::Color::White)
+      @world, @cursor = World.new(self), Cursor.new(self)
       register_actions
     end
 
@@ -25,6 +26,10 @@ module SongBugs
       end
     end
 
+    def cursor
+      @cursor
+    end
+
     def tick
       self.title = "SongBugs"
       @world.tick
@@ -33,6 +38,10 @@ module SongBugs
     # Returns the x position at the center of this window.
     def center_x
       width / 2
+    end
+
+    def mouse_state
+      Rubydraw.mouse_state
     end
   end
 end
