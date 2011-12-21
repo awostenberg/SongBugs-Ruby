@@ -1,5 +1,4 @@
 require 'program/alignment'
-require 'program/bug'
 
 module SongBugs
   class Palette
@@ -20,7 +19,6 @@ module SongBugs
       y_pos = (bottom_draw_y + height / 2) - (b.height / 2)
       b.position = Point[@alignment[1], y_pos]
       @children << b
-      @children << Bug.new(@window, Point[@alignment[2], y_pos], true)
     end
 
     def tick
@@ -43,8 +41,7 @@ module SongBugs
     end
 
     def height
-      h = @middle_i.height
-      return h
+      @middle_i.height
     end
   end
 end

@@ -1,6 +1,9 @@
+require 'program/cursor'
 require 'program/button'
 require 'program/main_menu'
 require 'program/board'
+require 'program/bug'
+require 'program/tile'
 
 module SongBugs
 # This class basically controlls everything that goes on.

@@ -2,14 +2,13 @@ require 'rubygems'
 require 'rubydraw'
 
 require 'program/world'
-require 'program/cursor'
 
 module SongBugs
   class GameWindow < Rubydraw::Window
     def initialize(size=Point[0, 0], flags=[Rubydraw::Flags::Fullscreen])
       # If you use 0 (for either window width or height, they both work),
       # Rubydraw makes the window as big as it can.
-      super(size, [], Rubydraw::Color::White)
+      super(size, flags, Rubydraw::Color::White)
       @world, @cursor = World.new(self), Cursor.new(self)
       register_actions
     end
