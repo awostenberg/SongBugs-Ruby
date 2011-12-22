@@ -16,7 +16,7 @@ module SongBugs
       # Pre-rotate every image.
       initialize_img_set(base_off, base_on)
       @image = @img_set[0][0]
-      @direction = 0
+      @direction, @state = 0, :off
     end
 
     # Populates @img_set with pre-rotated images.
@@ -94,6 +94,14 @@ module SongBugs
 
     def cursor
       @window.cursor
+    end
+
+    def on
+      @state = :on
+    end
+
+    def off
+      @state = :off
     end
   end
 end

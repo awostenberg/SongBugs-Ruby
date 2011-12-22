@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'rubydraw'
 
+require 'ext/round_to'
 require 'program/world'
 
 module SongBugs
