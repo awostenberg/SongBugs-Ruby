@@ -43,5 +43,13 @@ module SongBugs
     def mouse_state
       Rubydraw.mouse_state
     end
+
+    def draggables
+      @world.draggables
+    end
+
+    def add_draggable(obj)
+      @world.add_draggable(obj)
+    end
   end
 end

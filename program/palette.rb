@@ -2,8 +2,8 @@ require 'program/alignment'
 
 module SongBugs
   class Palette
-    def initialize(window)
-      @window = window
+    def initialize(window, world)
+      @window, @world = window, world
       @left_i = Rubydraw::Image.new("media/images/p_left.png")
       @middle_i = Rubydraw::Image.new("media/images/p_middle.png")
       @right_i = Rubydraw::Image.new("media/images/p_right.png")
@@ -22,6 +22,7 @@ module SongBugs
       @children << Tile.new(@window, Point[@alignment[4], y_pos], :e4, true)
       @children << Tile.new(@window, Point[@alignment[5], y_pos], :f4, true)
       @children << Tile.new(@window, Point[@alignment[6], y_pos], :g4, true)
+      @world.add_draggables(@children)
     end
 
     def tick

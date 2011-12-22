@@ -6,7 +6,7 @@ module SongBugs
   class Board
     def initialize(window, world)
       @window = window
-      @palette = Palette.new(window)
+      @palette = Palette.new(window, world)
     end
 
     def tick

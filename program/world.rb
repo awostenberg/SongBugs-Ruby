@@ -10,8 +10,7 @@ module SongBugs
 # It will handle the main menu and the board.
   class World
     def initialize(window)
-      @window = window
-      @mode = :main_menu
+      @window, @mode, @draggables = window, :main_menu, []
     end
 
     def tick
@@ -26,7 +25,9 @@ module SongBugs
         if @board.nil?
           @board = Board.new(@window, self)
         end
+        @window.cursor.tick
         @board.tick
+        @draggables.each {|d| d.tick}
       end
 
       unless @mode == :main_menu
@@ -45,5 +46,22 @@ module SongBugs
     end
 
     alias switch_mode set_mode
+
+    # Returns an array of objects that can be dragged by the cursor,
+    # e.g. bugs and tiles.
+    def draggables
+      @draggables
+    end
+
+    def add_draggable(obj)
+      @draggables << obj
+    end
+
+    # Add multiple draggables. Don't use Array#flatten because there
+    # might be arrays that don't want to be flattened already in
+    # +@draggables.+
+    def add_draggables(stuff)
+      stuff.each {|obj| add_draggable(obj)}
+    end
   end
 end

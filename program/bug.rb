@@ -100,6 +100,15 @@ module SongBugs
       @window.cursor
     end
 
+    def in_palette?
+      @in_palette
+    end
+
+    # Create an identical, free-floating copy of this bug.
+    def clone
+      self.class.new(@window, @position)
+    end
+
     def on
       @state = :on
     end
