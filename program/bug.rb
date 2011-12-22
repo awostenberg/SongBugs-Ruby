@@ -6,37 +6,43 @@ module SongBugs
 
   class Bug
 
-    attr_accessor(:position)
-
-    def initialize(window, position, in_palette=false)
-      @window, @position, @in_palette = window, position, in_palette
-      base_off = Rubydraw::Image.new("media/images/bug_off.png")
-      base_on = Rubydraw::Image.new("media/images/bug_on.png")
-      register_actions
-      # Pre-rotate every image.
-      initialize_img_set(base_off, base_on)
-      @image = @img_set[0][0]
-      @direction, @state = 0, :off
-    end
-
-    # Populates @img_set with pre-rotated images.
-    # *NOTE:* For some odd reason, when the image is rotated at
-    # 270°, the bottom is cropped.
-    def initialize_img_set(base_off, base_on)
+    # Populates ImgSet with pre-rotated images.
+    # *NOTE:* For some reason, when the image is rotated at 270°,
+    # the bottom is cropped.
+    # Also, +@@img_set+ is a class variable because if it were an
+    # instance variable, every single Bug would unnecessarily have
+    # its own image set. There only needs to be one! This also
+    # introduces the possibillity of easily implementing some sort
+    # of "texture pack".
+    def self.initialize_img_set(base_on, base_off)
       # 2DArray might actually work better for this.
-      @img_set = [[base_off], [base_on]]
+      @@img_set = [[base_off], [base_on]]
       # Before we start, create a placeholder for the image rotated
       # at 270°.
-      @img_set << nil
+      @@img_set << nil
       # SDL rotates images counter-clockwise?
       angle = 270
       # Not four times; the first image is already there.
       3.times do
         args = [angle, 1, false]
-        @img_set[0] << base_off.rotozoom(*args)
-        @img_set[1] << base_on.rotozoom(*args)
+        @@img_set[0] << base_off.rotozoom(*args)
+        @@img_set[1] << base_on.rotozoom(*args)
         angle -= 90
       end
+    end
+
+    SongBugs::Bug.initialize_img_set(
+        Rubydraw::Image.new("media/images/bug_off.png"),
+        Rubydraw::Image.new("media/images/bug_off.png")
+    )
+
+    attr_accessor(:position)
+
+    def initialize(window, position, in_palette=false)
+      @window, @position, @in_palette = window, position, in_palette
+      register_actions
+      @image = @@img_set[0][0]
+      @direction, @state = 0, :off
     end
 
     def register_actions
@@ -56,8 +62,6 @@ module SongBugs
           elsif k == rbd_key::LeftArrow
             @direction = 3
           end
-          @img_set[0].each { |elem| puts elem.class }
-          puts
         end
       end
     end
@@ -77,7 +81,7 @@ module SongBugs
         state = 0
       end
       # By the way, @direction starts at zero (0°)
-      @img_set[state][@direction]
+      @@img_set[state][@direction]
     end
 
     def width

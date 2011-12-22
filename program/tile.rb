@@ -9,7 +9,6 @@ module SongBugs
         :g4 => [c::Green]}
     def initialize(window, position, note, in_palette=false)
       @window, @position, @note, @in_palette = window, position, note, in_palette
-      puts @position.class
       color = NoteColorTable[note.to_sym][0]
       @drawable = Rubydraw::Surface.new(TileSize, color)
     end
