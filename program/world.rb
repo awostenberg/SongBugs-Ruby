@@ -16,12 +16,18 @@ module SongBugs
     def tick
       # Do everything for the main menu inside here.
       if @mode == :main_menu
+        # Get rid of the playing field; it isn't needed right now.
+        @board = nil
+        @draggables = []
         # Initialize the main menu if it doesn't already exist.
         if @main_menu.nil?
           @main_menu = MainMenu.new(@window, self)
         end
         @main_menu.tick
       elsif @mode == :play
+        # Get rid of the main menu; it isn't needed right now.
+        @main_menu = nil
+        # Create the board if it isn't already there.
         if @board.nil?
           @board = Board.new(@window, self)
         end
@@ -30,7 +36,7 @@ module SongBugs
         @draggables.each {|d| d.tick}
       end
 
-      unless @mode == :main_menu
+      if (not @mode == :main_menu) and (not @main_menu.nil?)
         @main_menu.hide
       end
     end
@@ -55,6 +61,10 @@ module SongBugs
 
     def add_draggable(obj)
       @draggables << obj
+    end
+
+    def delete_draggable(obj)
+      @draggables.delete(obj)
     end
 
     # Add multiple draggables. Don't use Array#flatten because there

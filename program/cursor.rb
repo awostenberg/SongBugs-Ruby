@@ -6,14 +6,23 @@ module SongBugs
       @window, @dragged = window, Bug.new(window, Point[0, 0])
       whenever Rubydraw::Events::MousePressed, window do |event|
         if event.button == Rubydraw::Mouse::Left and not dragging?
-          @window.draggables.each { |draggable|
+          # Check in reverse order because the bugs/tiles that draw
+          # on the top should get the opportunity to be dragged first.
+          @window.draggables.reverse.each { |draggable|
             if inside?(draggable.bounds)
               if draggable.in_palette?
                 obj = draggable.clone
-                @window.add_draggable(obj)
               else
                 obj = draggable
+                # Remove it from the list for a little.
+                @window.delete_draggable(obj)
               end
+              [obj, draggable].each {|elem| elem.on}
+              # If this is a new object, add it to the draggables
+              # list. Otherwise, also add it as to put it in the top
+              # layer.
+              @window.add_draggable(obj)
+              # Start dragging it.
               @dragged = obj
               # No need to continue iterating through the array.
               break
@@ -21,6 +30,11 @@ module SongBugs
         end
       end
       whenever Rubydraw::Events::MouseReleased, window do
+        if dragging?
+          # Stop the bug's glow (SongBugs::Tile#off doensn't actually
+          # do anything).
+          @dragged.off
+        end
         @dragged = nil
       end
     end
@@ -29,7 +43,7 @@ module SongBugs
     # position to the cursor position, on a snap-to grid.
     def tick
       if dragging?
-        @dragged.position = Point[x.round_to(@dragged.width), y.round_to(@dragged.height)]
+        @dragged.position = Point[x.floor_to(@dragged.width), y.floor_to(@dragged.height)]
       else
       end
     end

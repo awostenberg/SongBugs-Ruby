@@ -51,5 +51,9 @@ module SongBugs
     def add_draggable(obj)
       @world.add_draggable(obj)
     end
+
+    def delete_draggable(obj)
+      @world.delete_draggable(obj)
+    end
   end
 end

@@ -53,5 +53,12 @@ module SongBugs
     def clone
       self.class.new(@window, @position, @note)
     end
+
+    # Later, this method will play the tile's note
+    def on
+    end
+
+    def off
+    end
   end
 end

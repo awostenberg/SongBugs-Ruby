@@ -32,7 +32,7 @@ module SongBugs
     end
 
     SongBugs::Bug.initialize_img_set(
-        Rubydraw::Image.new("media/images/bug_off.png"),
+        Rubydraw::Image.new("media/images/bug_on.png"),
         Rubydraw::Image.new("media/images/bug_off.png")
     )
 
@@ -43,9 +43,29 @@ module SongBugs
       register_actions
       @image = @@img_set[0][0]
       @direction, @state = 0, :off
+      update_image
+    end
+
+    def update_image
+      if @state == :on
+        state = 1
+      else
+        state = 0
+      end
+      # By the way, @direction starts at zero (0°)
+      @image = @@img_set[state][@direction]
     end
 
     def register_actions
+      # Whenever the left mouse button is released, stop glowing if in
+      # the palette.
+      if in_palette?
+        whenever Rubydraw::Events::MouseReleased, @window do |msrelease|
+          if msrelease.button == Rubydraw::Mouse::Left
+            off
+          end
+        end
+      end
       # This little chunk of code rotates the bug depending on which arrow
       # key was pressed, e.g. up arrow will face the bug up, and the left
       # arrow will orient it left. Any other keys are ignored.
@@ -63,6 +83,8 @@ module SongBugs
             @direction = 3
           end
         end
+
+        update_image
       end
     end
 
@@ -71,29 +93,23 @@ module SongBugs
     end
 
     def tick
-      image.draw(@window, @position)
-    end
-
-    def image
-      if @state == :on
-        state = 1
-      else
-        state = 0
-      end
-      # By the way, @direction starts at zero (0°)
-      @@img_set[state][@direction]
+      @image.draw(@window, @position)
     end
 
     def width
-      @image.width
+      # Was originall +@image.width+, but it was off on all
+      # the images except the first... Strange...
+      @@img_set[0][0].width
     end
 
     def height
-      @image.height
+      # Was originall +@image.height+, but it was off on all
+      # the images except the first... Strange...
+      @@img_set[0][0].height
     end
 
     def size
-      @image.size
+      Point[width, height]
     end
 
     def cursor
@@ -111,10 +127,12 @@ module SongBugs
 
     def on
       @state = :on
+      update_image
     end
 
     def off
       @state = :off
+      update_image
     end
   end
 end
