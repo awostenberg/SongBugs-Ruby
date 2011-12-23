@@ -29,7 +29,9 @@ module SongBugs
       @left_i.draw(@window, Point[0, bottom_draw_y])
       ((@left_i.width)..east_draw_x).each { |x| @middle_i.draw(@window, Point[x, bottom_draw_y]) }
       @right_i.draw(@window, Point[east_draw_x, bottom_draw_y])
-      @children.each {|c| c.tick}
+      # Hmm... Don't need to tell children to tick; they are already in
+      # the world's @draggables array...
+      #@children.each {|c| c.tick}
     end
 
     # Returns the position at which one of this Palette's images should draw
