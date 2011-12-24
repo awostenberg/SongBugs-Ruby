@@ -11,13 +11,15 @@ module SongBugs
           @window.draggables.reverse.each { |draggable|
             if inside?(draggable.bounds)
               if draggable.in_palette?
+                # Make it glow if it's a bug, or beep if it's a tile.
+                draggable.on
+                # Create an identical bug/tile
                 obj = draggable.clone
               else
                 obj = draggable
                 # Remove it from the list for a little.
                 @window.delete_draggable(obj)
               end
-              [obj, draggable].each {|elem| elem.on}
               # If this is a new object, add it to the draggables
               # list. Otherwise, also add it as to put it in the top
               # layer.
@@ -30,11 +32,6 @@ module SongBugs
         end
       end
       whenever Rubydraw::Events::MouseReleased, window do
-        if dragging?
-          # Stop the bug's glow (SongBugs::Tile#off doensn't actually
-          # do anything).
-          @dragged.off
-        end
         @dragged = nil
       end
     end

@@ -1,28 +1,47 @@
+require 'fileutils'
+require 'program/sound_generator'
+
 module SongBugs
+  TempSoundPath = "media/sounds/"
   class Tile
     c = Rubydraw::Color
-
     colors = {
         :c4 => c::Red,
         :d4 => c::Orange,
-        :e4 => c::Yellow,
-        :f4 => c::LimeGreen,
-        :g4 => c::Green}
-
-    NoteTable = {
-        :c4 => nil,
-        :d4 => nil,
-        :e4 => nil,
-        :f4 => nil,
-        :g4 => nil
+        # Peach...ish
+        :e4 => c.new(255, 191, 0),
+        :f4 => c::Yellow,
+        # Strange green
+        :g4 => c.new(191, 255, 0),
+        :a4 => c::Green,
+        :b4 => c::Cyan#,
+        #:b4 => c::Blue
     }
 
-    NoteTable.each_key {|key|
-        NoteTable[key] = Rubydraw::Surface.new(TileSize, colors[key])}
+    # Will later be filled with instances of Rubydraw::Surface.
+    NoteTable = {}
+
+    # Create a temporary sound folder.
+    FileUtils.mkdir(TempSoundPath)
+    # Write the tone set into said folder.
+    notenames = SoundGenerator.write_all_tones_in(TempSoundPath)
+    # Load in each sound.
+    notenames.each {|key, val|
+      NoteTable[key] = [Rubydraw::Sound.new("#{TempSoundPath}/#{key}.wav")]}
+    # Get rid of the *temporary* folder.
+    FileUtils.rm_r(TempSoundPath)
+
+    #NoteTable.each {|key, val|
+    #  print "#{key} => #{val}\n"
+    #}
+
+    NoteTable.each {|key, val|
+      NoteTable[key] << Rubydraw::Surface.new(TileSize, colors[key])}
+    #puts NoteTable
 
     def initialize(window, position, note, in_palette=false)
       @window, @position, @note, @in_palette = window, position, note, in_palette
-      @drawable = NoteTable[note]
+      @drawable = NoteTable[note][1]
     end
 
     def tick
@@ -54,8 +73,14 @@ module SongBugs
       self.class.new(@window, @position, @note)
     end
 
-    # Later, this method will play the tile's note
+    # Returns the appropriate sound for this tile.
+    def sound
+      NoteTable[@note][0]
+    end
+
+    # Later, this method will play the tile's note.
     def on
+      sound.play
     end
 
     def off

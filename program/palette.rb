@@ -8,7 +8,7 @@ module SongBugs
       @middle_i = Rubydraw::Image.new("media/images/p_middle.png")
       @right_i = Rubydraw::Image.new("media/images/p_right.png")
       padding = 20
-      @alignment = Alignment.new(padding, window.width - padding, 6)
+      @alignment = Alignment.new(padding, window.width - padding, 8)
       initialize_children
     end
 
@@ -22,6 +22,8 @@ module SongBugs
       @children << Tile.new(@window, Point[@alignment[4], y_pos], :e4, true)
       @children << Tile.new(@window, Point[@alignment[5], y_pos], :f4, true)
       @children << Tile.new(@window, Point[@alignment[6], y_pos], :g4, true)
+      @children << Tile.new(@window, Point[@alignment[7], y_pos], :a4, true)
+      @children << Tile.new(@window, Point[@alignment[8], y_pos], :b4, true)
       @world.add_draggables(@children)
     end
 
