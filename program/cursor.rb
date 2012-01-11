@@ -8,8 +8,13 @@ module SongBugs
         if event.button == Rubydraw::Mouse::Left and not dragging?
           # Check in reverse order because the bugs/tiles that draw
           # on the top should get the opportunity to be dragged first.
-          @window.draggables.reverse.each { |draggable|
+          @window.draggables.reverse.each {|draggable|
             if inside?(draggable.bounds)
+              container = if @window.world.board
+                            @window.world.board
+                          else
+                            @window
+                          end
               if draggable.in_palette?
                 # Make it glow if it's a bug, or beep if it's a tile.
                 draggable.on
@@ -18,17 +23,17 @@ module SongBugs
               else
                 obj = draggable
                 # Remove it from the list for a little.
-                @window.delete_draggable(obj)
+                container.delete_draggable(obj)
               end
               # If this is a new object, add it to the draggables
               # list. Otherwise, also add it as to put it in the top
               # layer.
-              @window.add_draggable(obj)
+              container.add_draggable(obj)
               # Start dragging it.
               @dragged = obj
-              # No need to continue iterating through the array.
+              # No need to continue.
               break
-            end }
+            end}
         end
       end
       whenever Rubydraw::Events::MouseReleased, window do
@@ -41,7 +46,6 @@ module SongBugs
     def tick
       if dragging?
         @dragged.position = Point[x.floor_to(@dragged.width), y.floor_to(@dragged.height)]
-      else
       end
     end
 

@@ -6,6 +6,8 @@ require 'program/world'
 
 module SongBugs
   class GameWindow < Rubydraw::Window
+    attr_reader :world
+
     def initialize(size=Point[0, 0])
       # If you use 0 (for either window width or height, they both work),
       # Rubydraw makes the window as big as it can.

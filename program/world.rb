@@ -9,6 +9,8 @@ module SongBugs
 # This class basically controlls everything that goes on.
 # It will handle the main menu and the board.
   class World
+    attr_reader :board, :main_menu
+
     def initialize(window)
       @window, @mode, @draggables = window, :main_menu, []
     end
@@ -33,7 +35,6 @@ module SongBugs
         end
         @window.cursor.tick
         @board.tick
-        @draggables.each {|d| d.tick}
       end
 
       if (not @mode == :main_menu) and (not @main_menu.nil?)
@@ -56,7 +57,13 @@ module SongBugs
     # Returns an array of objects that can be dragged by the cursor,
     # e.g. bugs and tiles.
     def draggables
-      @draggables
+      result = @draggables.dup
+      if (not @board.nil?) and (not @board.playing?)
+       result << @board.draggables
+      end
+      result = result.flatten
+      result.compact!
+      result
     end
 
     def add_draggable(obj)

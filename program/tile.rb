@@ -11,11 +11,9 @@ module SongBugs
         # Peach...ish
         :e4 => c.new(255, 191, 0),
         :f4 => c::Yellow,
-        # Strange green
         :g4 => c.new(191, 255, 0),
         :a4 => c::Green,
-        :b4 => c::Cyan#,
-        #:b4 => c::Blue
+        :b4 => c::Cyan
     }
 
     # Will later be filled with instances of Rubydraw::Surface.
