@@ -33,13 +33,8 @@ module SongBugs
     # Get rid of the *temporary* folder.
     FileUtils.rm_r(TempSoundPath)
 
-    #NoteTable.each {|key, val|
-    #  print "#{key} => #{val}\n"
-    #}
-
     NoteTable.each {|key, val|
       NoteTable[key] << Rubydraw::Surface.new(TileSize, colors[key])}
-    #puts NoteTable
 
     attr_accessor :parent, :position, :note, :in_palette
     attr_reader :drawable
