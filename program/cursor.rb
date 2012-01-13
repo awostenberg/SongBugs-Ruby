@@ -5,35 +5,43 @@ module SongBugs
       # of the mouse pointer.
       @window, @dragged = window, Bug.new(window, Point[0, 0])
       whenever Rubydraw::Events::MousePressed, window do |event|
-        if event.button == Rubydraw::Mouse::Left and not dragging?
-          # Check in reverse order because the bugs/tiles that draw
-          # on the top should get the opportunity to be dragged first.
-          @window.draggables.reverse.each {|draggable|
-            if inside?(draggable.bounds)
-              container = if @window.world.board
-                            @window.world.board
-                          else
-                            @window
-                          end
-              if draggable.in_palette?
-                # Make it glow if it's a bug, or beep if it's a tile.
-                draggable.on
-                # Create an identical bug/tile
-                obj = draggable.clone
-              else
-                obj = draggable
-                # Remove it from the list for a little.
-                container.delete_draggable(obj)
+        if not dragging?
+          if event.button == Rubydraw::Mouse::Left
+            # Check in reverse order because the bugs/tiles that draw
+            # on the top should get the opportunity to be dragged first.
+            @window.draggables.reverse.each {|draggable|
+              if inside?(draggable.bounds)
+                container = @window.world.board
+                container = @window if not container
+                if draggable.in_palette?
+                  # Make it glow if it's a bug, or beep if it's a tile.
+                  draggable.on
+                  # Create an identical bug/tile
+                  obj = draggable.clone
+                  obj.parent = container
+                  obj.in_palette = false
+                else
+                  obj = draggable
+                  # Remove it from the list for a little.
+                  container.delete_draggable(obj)
+                end
+                # If this is a new object, add it to the draggables
+                # list. Otherwise, also add it as to put it in the top
+                # layer.
+                container.add_draggable(obj)
+                # Start dragging it.
+                @dragged = obj
+                # No need to continue.
+                break
+              end }
+          end
+          if event.button == Rubydraw::Mouse::Right
+            @window.draggables.reverse.each {|draggable|
+              if inside?(draggable.bounds)
+                draggable.delete
               end
-              # If this is a new object, add it to the draggables
-              # list. Otherwise, also add it as to put it in the top
-              # layer.
-              container.add_draggable(obj)
-              # Start dragging it.
-              @dragged = obj
-              # No need to continue.
-              break
-            end}
+            }
+          end
         end
       end
       whenever Rubydraw::Events::MouseReleased, window do

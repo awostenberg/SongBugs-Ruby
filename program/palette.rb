@@ -2,7 +2,7 @@ require 'program/alignment'
 
 module SongBugs
   class Palette
-    attr_reader :children
+    attr_reader :children, :window
     alias draggables children
 
     def initialize(window, world)
@@ -18,15 +18,14 @@ module SongBugs
     def initialize_children
       @children = []
       y_pos = (bottom_draw_y + height / 2) - (TileSize.y / 2)
-      @children << Bug.new(@window, Point[@alignment[1], y_pos], true)
-      @children << Tile.new(@window, Point[@alignment[2], y_pos], :c4, true)
-      @children << Tile.new(@window, Point[@alignment[3], y_pos], :d4, true)
-      @children << Tile.new(@window, Point[@alignment[4], y_pos], :e4, true)
-      @children << Tile.new(@window, Point[@alignment[5], y_pos], :f4, true)
-      @children << Tile.new(@window, Point[@alignment[6], y_pos], :g4, true)
-      @children << Tile.new(@window, Point[@alignment[7], y_pos], :a4, true)
-      @children << Tile.new(@window, Point[@alignment[8], y_pos], :b4, true)
-      #@world.add_draggables(@children)
+      @children << Bug.new(self, Point[@alignment[1], y_pos], true)
+      @children << Tile.new(self, Point[@alignment[2], y_pos], :c4, true)
+      @children << Tile.new(self, Point[@alignment[3], y_pos], :d4, true)
+      @children << Tile.new(self, Point[@alignment[4], y_pos], :e4, true)
+      @children << Tile.new(self, Point[@alignment[5], y_pos], :f4, true)
+      @children << Tile.new(self, Point[@alignment[6], y_pos], :g4, true)
+      @children << Tile.new(self, Point[@alignment[7], y_pos], :a4, true)
+      @children << Tile.new(self, Point[@alignment[8], y_pos], :b4, true)
     end
 
     def tick
@@ -54,6 +53,15 @@ module SongBugs
 
     def height
       @middle_i.height
+    end
+
+    def delete(obj)
+      puts @children.size
+      @children.delete(obj)
+    end
+
+    def palette
+      self
     end
   end
 end

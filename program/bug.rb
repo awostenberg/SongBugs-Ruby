@@ -1,3 +1,5 @@
+require 'program/draggable'
+
 module SongBugs
   # This is how big each tile instance should be, and how big the
   # bug image should be. Note that nothing will happen if the image
@@ -5,6 +7,7 @@ module SongBugs
   TileSize = Point[20, 20]
 
   class Bug
+    include Draggable
 
     # Populates ImgSet with pre-rotated images.
     # *NOTE:* For some reason, when the image is rotated at 270°,
@@ -36,10 +39,10 @@ module SongBugs
         Rubydraw::Image.new("media/images/bug_off.png")
     )
 
-    attr_accessor(:position)
+    attr_accessor(:parent, :position, :in_palette)
 
-    def initialize(window, position, in_palette=false)
-      @window, @position, @in_palette = window, position, in_palette
+    def initialize(parent, position, in_palette=false)
+      @window, @parent, @position, @in_palette = parent.window, parent, position, in_palette
       register_actions
       @image = @@img_set[0][0]
       @direction, @state = 0, :off
@@ -92,8 +95,8 @@ module SongBugs
       Rectangle[@position, size]
     end
 
-    def tick
-      @image.draw(@window, @position)
+    def drawable
+      @image
     end
 
     def width
@@ -122,7 +125,11 @@ module SongBugs
 
     # Create an identical, free-floating copy of this bug.
     def clone
-      self.class.new(@window, @position)
+      self.class.new(@parent, @position)
+    end
+
+    def delete
+      @parent.delete(self)
     end
 
     def on
@@ -133,6 +140,14 @@ module SongBugs
     def off
       @state = :off
       update_image
+    end
+
+    def tile?
+      false
+    end
+
+    def bug?
+      true
     end
   end
 end

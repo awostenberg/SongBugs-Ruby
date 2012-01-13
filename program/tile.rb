@@ -1,9 +1,13 @@
 require 'fileutils'
 require 'program/sound_generator'
+require 'program/draggable'
 
 module SongBugs
+
   TempSoundPath = "media/sounds/"
   class Tile
+    include Draggable
+
     c = Rubydraw::Color
     colors = {
         :c4 => c::Red,
@@ -37,13 +41,12 @@ module SongBugs
       NoteTable[key] << Rubydraw::Surface.new(TileSize, colors[key])}
     #puts NoteTable
 
-    def initialize(window, position, note, in_palette=false)
-      @window, @position, @note, @in_palette = window, position, note, in_palette
-      @drawable = NoteTable[note][1]
-    end
+    attr_accessor :parent, :position, :note, :in_palette
+    attr_reader :drawable
 
-    def tick
-      @drawable.draw(@window, @position)
+    def initialize(parent, position, note, in_palette=false)
+      @window, @parent, @position, @note, @in_palette = parent.window, parent, position, note, in_palette
+      @drawable = NoteTable[note][1]
     end
 
     def bounds
@@ -68,7 +71,7 @@ module SongBugs
 
     # Create an identical, free-floating copy of this tile.
     def clone
-      self.class.new(@window, @position, @note)
+      self.class.new(@parent, @position, @note)
     end
 
     # Returns the appropriate sound for this tile.
@@ -82,6 +85,18 @@ module SongBugs
     end
 
     def off
+    end
+
+    def delete
+      @parent.delete(self)
+    end
+
+    def tile?
+      true
+    end
+
+    def bug?
+      false
     end
   end
 end

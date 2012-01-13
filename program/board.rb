@@ -4,7 +4,7 @@ module SongBugs
 # The main playing field. This is where the bugs and tiles
 # happen.
   class Board
-    attr_reader :palette
+    attr_reader :palette, :window
 
     def initialize(window, world)
       @window = window
@@ -41,6 +41,8 @@ module SongBugs
     def delete_draggable(obj)
       @draggables.delete(obj)
     end
+
+    alias delete delete_draggable
 
     def tick
       if @playing
