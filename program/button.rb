@@ -2,6 +2,11 @@ module SongBugs
   class Button
     attr_reader(:text, :center)
 
+    # For some reason, this constant doesn't inherit
+    def IMG_PATH
+      SongBugs::IMG_PATH
+    end
+
     # Create a new button with the contents of +text+. When
     # The button is clicked, it will execute +block+.
     #
@@ -10,8 +15,7 @@ module SongBugs
     def initialize(window, text, center, &block)
       @window, @center, @block = window, center, block
       @text = Rubydraw::Text.new(text, Rubydraw::Color::Black)
-      @pressed = Rubydraw::Image.new("media/images/button_pressed.png")
-      @normal = Rubydraw::Image.new("media/images/button_normal.png")
+      @pressed, @normal = %w{pressed normal}.collect {|elem| Rubydraw::Image.new(IMG_PATH + "buttons/#{elem}.png")}
       @drawable = @normal
       @mouse_position = Point[0, 0]
       @text_position = (@center - Point[width, height])

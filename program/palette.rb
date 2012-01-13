@@ -7,7 +7,7 @@ module SongBugs
 
     def initialize(window, world)
       @window, @world = window, world
-      @left_i, @middle_i, @right_i = Rubydraw::Image.new("media/images/p_left.png"), Rubydraw::Image.new("media/images/p_middle.png"), Rubydraw::Image.new("media/images/p_right.png")
+      @left_i, @middle_i, @right_i = %w{left middle right}.collect {|elem| Rubydraw::Image.new(IMG_PATH + "palette/#{elem}.png")}
       @draggables = []
       padding = 20
       @alignment = Alignment.new(padding, window.width - padding, 8)
