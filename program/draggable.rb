@@ -1,4 +1,6 @@
 module Draggable
+  attr_accessor :parent, :position, :in_palette
+
   def delete
     @parent.delete(self)
   end
@@ -11,8 +13,11 @@ module Draggable
     end
   end
 
-
   def tick
-    drawable.draw(@window, @position)
+    @drawable.draw(@window, @position)
+  end
+
+  def size
+    Point[width, height]
   end
 end

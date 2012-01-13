@@ -50,8 +50,8 @@ module SongBugs
       else
         @window.bkg_color = @paused_color
         @palette.tick
-        @draggables.each {|obj| obj.tick}
       end
+      @draggables.each {|obj| obj.tick}
     end
   end
 end

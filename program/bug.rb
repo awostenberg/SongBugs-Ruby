@@ -34,17 +34,13 @@ module SongBugs
       end
     end
 
-    SongBugs::Bug.initialize_img_set(
-        Rubydraw::Image.new("media/images/bug_on.png"),
-        Rubydraw::Image.new("media/images/bug_off.png")
-    )
-
-    attr_accessor(:parent, :position, :in_palette)
+    args = ["on", "off"].collect {|elem| Rubydraw::Image.new(IMG_PATH + "bugs/#{elem}.png")}
+    SongBugs::Bug.initialize_img_set(*args)
 
     def initialize(parent, position, in_palette=false)
       @window, @parent, @position, @in_palette = parent.window, parent, position, in_palette
       register_actions
-      @image = @@img_set[0][0]
+      @drawable = @@img_set[0][0]
       @direction, @state = 0, :off
       update_image
     end
@@ -56,7 +52,7 @@ module SongBugs
         state = 0
       end
       # By the way, @direction starts at zero (0°)
-      @image = @@img_set[state][@direction]
+      @drawable = @@img_set[state][@direction]
     end
 
     def register_actions
@@ -95,24 +91,16 @@ module SongBugs
       Rectangle[@position, size]
     end
 
-    def drawable
-      @image
-    end
-
     def width
-      # Was originall +@image.width+, but it was off on all
+      # Was originally +@image.width+, but it was off on all
       # the images except the first... Strange...
       @@img_set[0][0].width
     end
 
     def height
-      # Was originall +@image.height+, but it was off on all
+      # Was originally +@image.height+, but it was off on all
       # the images except the first... Strange...
       @@img_set[0][0].height
-    end
-
-    def size
-      Point[width, height]
     end
 
     def cursor

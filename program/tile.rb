@@ -36,8 +36,7 @@ module SongBugs
     NoteTable.each {|key, val|
       NoteTable[key] << Rubydraw::Surface.new(TileSize, colors[key])}
 
-    attr_accessor :parent, :position, :note, :in_palette
-    attr_reader :drawable
+    attr_accessor :note
 
     def initialize(parent, position, note, in_palette=false)
       @window, @parent, @position, @note, @in_palette = parent.window, parent, position, note, in_palette
@@ -54,10 +53,6 @@ module SongBugs
 
     def height
       @drawable.height
-    end
-
-    def position=(new)
-      @position = new
     end
 
     def in_palette?
@@ -80,10 +75,6 @@ module SongBugs
     end
 
     def off
-    end
-
-    def delete
-      @parent.delete(self)
     end
 
     def tile?
