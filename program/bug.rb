@@ -87,10 +87,6 @@ module SongBugs
       end
     end
 
-    def bounds
-      Rectangle[@position, size]
-    end
-
     def width
       # Was originally +@image.width+, but it was off on all
       # the images except the first... Strange...
@@ -105,10 +101,6 @@ module SongBugs
 
     def cursor
       @window.cursor
-    end
-
-    def in_palette?
-      @in_palette
     end
 
     # Create an identical, free-floating copy of this bug.

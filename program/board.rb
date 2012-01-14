@@ -47,10 +47,12 @@ module SongBugs
     def tick
       if @playing
         @window.bkg_color = @playing_color
+        @palette.show
       else
         @window.bkg_color = @paused_color
-        @palette.tick
+        @palette.hide
       end
+      @palette.tick
       @draggables.each {|obj| obj.tick}
     end
   end

@@ -1,5 +1,6 @@
 module SongBugs
   class Button
+    # TODO: Possibly implement variable button width to see how it looks
     attr_reader(:text, :center)
 
     # For some reason, this constant doesn't inherit

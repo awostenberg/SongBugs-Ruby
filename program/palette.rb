@@ -11,7 +11,9 @@ module SongBugs
       @draggables = []
       padding = 20
       @alignment = Alignment.new(padding, window.width - padding, 8)
+      @offset, @slide_speed = 0, 10
       initialize_children
+      show
     end
 
     # Create all the objects in the palette (all the bugs and tiles)
@@ -29,14 +31,32 @@ module SongBugs
     end
 
     def tick
+      if @showing
+        new = @offset + @slide_speed
+        if new >= height
+          @offset = height
+        else
+          @offset = new
+        end
+      else
+        new = @offset - @slide_speed
+        if @offset <= 0
+          @offset = 0
+        else
+          @offset = new
+        end
+      end
       # First, draw the left rounded palette piece on the left of the screen.
-      @left_i.draw(@window, Point[0, bottom_draw_y])
+      @left_i.draw(@window, Point[0, bottom_draw_y + @offset])
       # Blit as many middle pieces until it reaches the position for the right piece.
-      ((@left_i.width)..east_draw_x).each { |x| @middle_i.draw(@window, Point[x, bottom_draw_y]) }
+      ((@left_i.width)..east_draw_x).each { |x| @middle_i.draw(@window, Point[x, bottom_draw_y + @offset]) }
       # Draw the right rounded piece.
-      @right_i.draw(@window, Point[east_draw_x, bottom_draw_y])
+      @right_i.draw(@window, Point[east_draw_x, bottom_draw_y + @offset])
       # Draw the bugs and tiles that are in the palette.
-      @children.each {|c| c.tick}
+      @children.each {|c|
+        c.offset = Point[0, @offset]
+        c.tick
+      }
     end
 
     # Returns the position at which one of this Palette's images should draw
@@ -58,6 +78,14 @@ module SongBugs
     def delete(obj)
       puts @children.size
       @children.delete(obj)
+    end
+
+    def show
+      @showing = true
+    end
+
+    def hide
+      @showing = false
     end
 
     def palette

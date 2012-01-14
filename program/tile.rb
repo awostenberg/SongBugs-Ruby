@@ -43,20 +43,12 @@ module SongBugs
       @drawable = NoteTable[note][1]
     end
 
-    def bounds
-      Rectangle[@position, @drawable.size]
-    end
-
     def width
       @drawable.width
     end
 
     def height
       @drawable.height
-    end
-
-    def in_palette?
-      @in_palette
     end
 
     # Create an identical, free-floating copy of this tile.
