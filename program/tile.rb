@@ -1,6 +1,6 @@
 require 'fileutils'
-require 'program/sound_generator'
-require 'program/draggable'
+require 'sound_generator'
+require 'draggable'
 
 module SongBugs
 

@@ -1,4 +1,4 @@
-require 'program/alignment'
+require 'ui/alignment'
 
 module SongBugs
   class Palette
@@ -30,22 +30,40 @@ module SongBugs
       @children << Tile.new(self, Point[@alignment[8], y_pos], :b4, true)
     end
 
-    def tick
+    # Slide the palette up, down, or don't slide depending
+    # on the position of the palette and the state of the
+    # game.
+    def slide_if_necessary
       if @showing
+        # Calculate what the y position would be if the
+        # palette were to slide up.
         new = @offset + @slide_speed
         if new >= height
+          # If it will be above the max height, set it to
+          # that.
           @offset = height
         else
+          # Slide the palette up.
           @offset = new
         end
       else
+        # Calculate what the y position would be if the
+        # palette were to slide down.
         new = @offset - @slide_speed
         if @offset <= 0
+          # If it will be below the min height, set it to
+          # that.
           @offset = 0
         else
+          # Slide the palette down.
           @offset = new
         end
       end
+    end
+
+    def tick
+      slide_if_necessary
+
       # First, draw the left rounded palette piece on the left of the screen.
       @left_i.draw(@window, Point[0, bottom_draw_y + @offset])
       # Blit as many middle pieces until it reaches the position for the right piece.

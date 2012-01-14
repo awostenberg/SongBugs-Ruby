@@ -1,4 +1,4 @@
-require 'program/palette'
+require 'palette'
 
 module SongBugs
 # The main playing field. This is where the bugs and tiles

@@ -2,7 +2,7 @@ require 'rubygems'
 require 'rubydraw'
 
 require 'ext/floor_to'
-require 'program/world'
+require 'world'
 
 module SongBugs
   class GameWindow < Rubydraw::Window

@@ -1,9 +1,10 @@
-require 'program/cursor'
-require 'program/button'
-require 'program/main_menu'
-require 'program/board'
-require 'program/bug'
-require 'program/tile'
+require 'cursor'
+require 'ui/button'
+require 'menus/options_menu'
+require 'menus/main_menu'
+require 'board'
+require 'bug'
+require 'tile'
 
 module SongBugs
 # This class basically controlls everything that goes on.
@@ -39,6 +40,10 @@ module SongBugs
 
       if (not @mode == :main_menu) and (not @main_menu.nil?)
         @main_menu.hide
+      end
+
+      if (not @mode == :options) and (not @settings.nil?)
+        @settings.hide
       end
     end
 

@@ -1,4 +1,4 @@
-require 'program/draggable'
+require 'draggable'
 
 module SongBugs
   # This is how big each tile instance should be, and how big the
