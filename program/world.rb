@@ -19,8 +19,6 @@ module SongBugs
     def tick
       # Do everything for the main menu inside here.
       if @mode == :main_menu
-        # Get rid of the playing field; it isn't needed right now.
-        @board = nil
         @draggables = []
         # Initialize the main menu if it doesn't already exist.
         if @main_menu.nil?
@@ -28,22 +26,25 @@ module SongBugs
         end
         @main_menu.tick
       elsif @mode == :play
-        # Get rid of the main menu; it isn't needed right now.
-        @main_menu = nil
         # Create the board if it isn't already there.
         if @board.nil?
           @board = Board.new(@window, self)
         end
         @window.cursor.tick
         @board.tick
+      elsif @mode == :options
+        if @options_menu.nil?
+          @options_menu = OptionsMenu.new(@window, self)
+        end
+        @options_menu.tick
       end
 
-      if (not @mode == :main_menu) and (not @main_menu.nil?)
-        @main_menu.hide
+      unless @mode == :main_menu
+        @main_menu = nil
       end
 
-      if (not @mode == :options) and (not @settings.nil?)
-        @settings.hide
+      unless not @mode == :options
+        @options_menu = nil
       end
     end
 

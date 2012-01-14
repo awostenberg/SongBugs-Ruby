@@ -42,6 +42,10 @@ module SongBugs
       width / 2
     end
 
+    def center
+      size / 2
+    end
+
     def mouse_state
       Rubydraw.mouse_state
     end

@@ -1,3 +1,4 @@
+require 'ui/button'
 require 'ui/alignment'
 
 module SongBugs

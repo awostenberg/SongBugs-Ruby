@@ -13,11 +13,16 @@ module SongBugs
     #
     # Note that the text *will* hang off the button if it is
     # too long.
-    def initialize(window, text, center, &block)
+    def initialize(window, text, center, pressed = "#{IMG_PATH}buttons/pressed.png", normal = "#{IMG_PATH}buttons/normal.png", &block)
       @window, @center, @block = window, center, block
+      @block = (proc {}) if @block.nil?
+      # !!!
+      # Bug in Rubydraw: Text objects will return +nil+ to the width
+      # and height if the text string is empty! Got to fix that!
+      text = " " if text.empty?
       @text = Rubydraw::Text.new(text, Rubydraw::Color::Black)
-      @pressed, @normal = %w{pressed normal}.collect {|elem| Rubydraw::Image.new(IMG_PATH + "buttons/#{elem}.png")}
-      @drawable = @normal
+      @pressed, @normal = [pressed, normal].collect {|elem| Rubydraw::Image.new(elem)}
+      @button = @normal
       @mouse_position = Point[0, 0]
       @text_position = (@center - Point[width, height])
       @being_pressed = false
@@ -35,7 +40,7 @@ module SongBugs
             # Left mouse button
             when Rubydraw::Ms::Left
               if cursor.inside?(self.bounding_box)
-                @drawable = @pressed
+                @button = @pressed
                 @being_pressed = true
               end
           end
@@ -48,7 +53,7 @@ module SongBugs
               # Execute the block that whoever created me wanted to be run.
               @block.call
             end
-            @drawable = @normal
+            @button = @normal
             @being_pressed = false
         end
       end
@@ -56,7 +61,7 @@ module SongBugs
 
     def tick
       @showing = true
-      @drawable.draw(@window, position)
+      @button.draw(@window, position)
       @text.draw(@window, @center - Point[@text.width / 2, @text.height / 2])
     end
 
@@ -68,7 +73,7 @@ module SongBugs
     # Returns a Rubydraw::Rectangle that represents where this
     # button can be clicked.
     def bounding_box
-      Rectangle[position, Point[@drawable.width, @drawable.height]]
+      Rectangle[position, Point[@button.width, @button.height]]
     end
 
     def cursor
@@ -86,11 +91,11 @@ module SongBugs
     end
 
     def width
-      @drawable.width
+      @button.width
     end
 
     def height
-      @drawable.height
+      @button.height
     end
 
     def showing?

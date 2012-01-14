@@ -22,7 +22,7 @@ module Draggable
 
   def tick
     set_offset
-    @drawable.draw(@window, @position + @offset)
+    @button.draw(@window, @position + @offset)
   end
 
   def size

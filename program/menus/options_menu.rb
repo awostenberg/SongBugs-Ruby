@@ -1,12 +1,16 @@
+require 'ui/drop-down'
+
 module SongBugs
   class OptionsMenu
-    def initialize(world)
-      @window, @world, @showing = world.window, world, false
-      @txt = Rubydraw::Text.new("Hello world", 50)
+    def initialize(*args)
+      arg_number = 2
+      raise ArgumentError, "wrong number of arguments (#{args.size} for #{arg_number})" if args.size != arg_number
+      @window, @world = args
+      @dmenu = DropDown.new(*args << Point[50, 50])
     end
 
     def tick
-      @txt.draw(@window, Point[50, 50])
+      @dmenu.tick
     end
   end
 end
