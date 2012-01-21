@@ -18,6 +18,8 @@ module SongBugs
 
     def tick
       # Do everything for the main menu inside here.
+      # I could probably set up a method to automatically add modes
+      # and manage them, so that you don't have to do it yourself
       if @mode == :main_menu
         @draggables = []
         # Initialize the main menu if it doesn't already exist.
@@ -32,20 +34,21 @@ module SongBugs
         end
         @window.cursor.tick
         @board.tick
-      elsif @mode == :options
-        if @options_menu.nil?
-          @options_menu = OptionsMenu.new(@window, self)
-        end
-        @options_menu.tick
+      # Not going to build an options menu for now
+      #elsif @mode == :options
+      #  if @options_menu.nil?
+      #    @options_menu = OptionsMenu.new(@window, self)
+      #  end
+      #  @options_menu.tick
       end
 
       unless @mode == :main_menu
         @main_menu = nil
       end
 
-      unless not @mode == :options
-        @options_menu = nil
-      end
+      #unless @mode == :options
+      #  @options_menu = nil
+      #end
     end
 
     # Fill the window with +color+.

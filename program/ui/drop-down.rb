@@ -1,23 +1,20 @@
 require 'ui/button'
+require 'ui/floating_menu'
 
 module SongBugs
   class DropDown
-    def initialize(window, world, position)
+    def initialize(window, world, position, contents)
       @window, @world, @position = window, world, position
+      #puts @position
       imgpath = IMG_PATH + "drop-down.png"
-      @button = Button.new(@window, "", @window.center, imgpath, imgpath) {puts "Button pressed!"}
+      @img = Rubydraw::Image.new(imgpath)
+      @button = Button.new(@window, "", @position, imgpath, imgpath) {@showing = false}
       register_actions
     end
 
     def register_actions
-      msleft = Rubydraw::Mouse::Left
-      whenever Rubydraw::Events::MousePressed, @window do |e|
-        #if e.button == msleft and cursor.inside?(bounds)
-        #end
-      end
-      whenever Rubydraw::Events::MouseReleased, @window do |e|
-        #if e.button == msleft and cursor.inside?(bounds)
-        #end
+      whenever Rubydraw::Events::MousePressed do |ev|
+        @showing = false
       end
     end
 
@@ -29,7 +26,7 @@ module SongBugs
       @button.tick
     end
 
-    def bounds
+    def button_bounds
       Rectangle[@position, @button.size]
     end
   end

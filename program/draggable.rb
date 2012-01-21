@@ -29,7 +29,7 @@ module Draggable
     Point[width, height]
   end
 
-  def bounds
+  def button_bounds
     set_offset
     Rectangle[@position + @offset, size]
   end

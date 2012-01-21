@@ -7,14 +7,15 @@ module SongBugs
     # Creates a new main menu, complete with all the buttons!
     def initialize(window, world)
       @window, @world = window, world
-      @alignment = Alignment.new(0, window.height, 3)
+      @alignment = Alignment.new(0, window.height, 2)
       @buttons = []
       # Assume that this menu is not being drawn.
       @showing = false
       c = window.center_x
       @buttons << (Button.new(window, "Play", Point[c, @alignment[1]]) { world.switch_mode(:play) }) <<
-        (Button.new(window, "Options", Point[c, @alignment[2]]) {world.switch_mode(:options)}) <<
-        (Button.new(window, "Exit game", Point[c, @alignment[3]]) { window.close })
+        # Not using the options menu for now
+        #(Button.new(window, "Options", Point[c, @alignment[2]]) {world.switch_mode(:options)}) <<
+        (Button.new(window, "Exit game", Point[c, @alignment[2]]) { window.close })
     end
 
     def tick

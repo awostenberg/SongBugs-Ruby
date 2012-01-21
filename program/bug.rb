@@ -69,7 +69,7 @@ module SongBugs
       # key was pressed, e.g. up arrow will face the bug up, and the left
       # arrow will orient it left. Any other keys are ignored.
       whenever Rubydraw::Events::KeyPressed, @window do |event|
-        if cursor.inside?(bounds)
+        if cursor.inside?(button_bounds)
           k = event.key
           rbd_key = Rubydraw::Key
           if k == rbd_key::UpArrow

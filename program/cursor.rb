@@ -10,7 +10,7 @@ module SongBugs
             # Check in reverse order because the bugs/tiles that draw
             # on the top should get the opportunity to be dragged first.
             @window.draggables.reverse.each {|draggable|
-              if inside?(draggable.bounds)
+              if inside?(draggable.button_bounds)
                 container = @window.world.board
                 container = @window if not container
                 if draggable.in_palette?

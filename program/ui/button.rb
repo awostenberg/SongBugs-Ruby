@@ -16,10 +16,6 @@ module SongBugs
     def initialize(window, text, center, pressed = "#{IMG_PATH}buttons/pressed.png", normal = "#{IMG_PATH}buttons/normal.png", &block)
       @window, @center, @block = window, center, block
       @block = (proc {}) if @block.nil?
-      # !!!
-      # Bug in Rubydraw: Text objects will return +nil+ to the width
-      # and height if the text string is empty! Got to fix that!
-      text = " " if text.empty?
       @text = Rubydraw::Text.new(text, Rubydraw::Color::Black)
       @pressed, @normal = [pressed, normal].collect {|elem| Rubydraw::Image.new(elem)}
       @button = @normal
@@ -96,6 +92,10 @@ module SongBugs
 
     def height
       @button.height
+    end
+
+    def size
+      Point[width, height]
     end
 
     def showing?
