@@ -18,7 +18,7 @@ module SongBugs
       @block = (proc {}) if @block.nil?
       @text = Rubydraw::Text.new(text, Rubydraw::Color::Black)
       @pressed, @normal = [pressed, normal].collect {|elem| Rubydraw::Image.new(elem)}
-      @button = @normal
+      @image = @normal
       @mouse_position = Point[0, 0]
       @text_position = (@center - Point[width, height])
       @being_pressed = false
@@ -36,7 +36,7 @@ module SongBugs
             # Left mouse button
             when Rubydraw::Ms::Left
               if cursor.inside?(self.bounding_box)
-                @button = @pressed
+                @image = @pressed
                 @being_pressed = true
               end
           end
@@ -49,7 +49,7 @@ module SongBugs
               # Execute the block that whoever created me wanted to be run.
               @block.call
             end
-            @button = @normal
+            @image = @normal
             @being_pressed = false
         end
       end
@@ -57,7 +57,7 @@ module SongBugs
 
     def tick
       @showing = true
-      @button.draw(@window, position)
+      @image.draw(@window, position)
       @text.draw(@window, @center - Point[@text.width / 2, @text.height / 2])
     end
 
@@ -69,7 +69,7 @@ module SongBugs
     # Returns a Rubydraw::Rectangle that represents where this
     # button can be clicked.
     def bounding_box
-      Rectangle[position, Point[@button.width, @button.height]]
+      Rectangle[position, Point[@image.width, @image.height]]
     end
 
     def cursor
@@ -83,15 +83,15 @@ module SongBugs
 
     # Returns the currently pressed button.
     def mouse_button
-      mouse_state.button
+      mouse_state.image
     end
 
     def width
-      @button.width
+      @image.width
     end
 
     def height
-      @button.height
+      @image.height
     end
 
     def size

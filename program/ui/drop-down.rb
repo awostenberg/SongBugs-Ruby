@@ -8,7 +8,7 @@ module SongBugs
       #puts @position
       imgpath = IMG_PATH + "drop-down.png"
       @img = Rubydraw::Image.new(imgpath)
-      @button = Button.new(@window, "", @position, imgpath, imgpath) {@showing = false}
+      @image = Button.new(@window, "", @position, imgpath, imgpath) {@showing = false}
       register_actions
     end
 
@@ -23,11 +23,11 @@ module SongBugs
     end
 
     def tick
-      @button.tick
+      @image.tick
     end
 
     def button_bounds
-      Rectangle[@position, @button.size]
+      Rectangle[@position, @image.size]
     end
   end
 end

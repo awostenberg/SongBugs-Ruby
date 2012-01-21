@@ -40,15 +40,15 @@ module SongBugs
 
     def initialize(parent, position, note, in_palette=false)
       @window, @parent, @position, @note, @in_palette = parent.window, parent, position, note, in_palette
-      @button = NoteTable[note][1]
+      @image = NoteTable[note][1]
     end
 
     def width
-      @button.width
+      @image.width
     end
 
     def height
-      @button.height
+      @image.height
     end
 
     # Create an identical, free-floating copy of this tile.

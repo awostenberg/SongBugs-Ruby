@@ -1,13 +1,13 @@
 require 'cursor'
 require 'ui/button'
-require 'menus/options_menu'
+#require 'menus/options_menu'
 require 'menus/main_menu'
 require 'board'
 require 'bug'
 require 'tile'
 
 module SongBugs
-# This class basically controlls everything that goes on.
+# This class basically controls everything that goes on.
 # It will handle the main menu and the board.
   class World
     attr_reader :board, :main_menu
@@ -19,7 +19,8 @@ module SongBugs
     def tick
       # Do everything for the main menu inside here.
       # I could probably set up a method to automatically add modes
-      # and manage them, so that you don't have to do it yourself
+      # and manage them, so that you don't have to do it yourself, and
+      # to remove lots of duplicate code.
       if @mode == :main_menu
         @draggables = []
         # Initialize the main menu if it doesn't already exist.

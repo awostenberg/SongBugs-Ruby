@@ -40,7 +40,7 @@ module SongBugs
     def initialize(parent, position, in_palette=false)
       @window, @parent, @position, @in_palette = parent.window, parent, position, in_palette
       register_actions
-      @button = @@img_set[0][0]
+      @image = @@img_set[0][0]
       @direction, @state = 0, :off
       update_image
     end
@@ -52,7 +52,7 @@ module SongBugs
         state = 0
       end
       # By the way, @direction starts at zero (0°)
-      @button = @@img_set[state][@direction]
+      @image = @@img_set[state][@direction]
     end
 
     def register_actions
