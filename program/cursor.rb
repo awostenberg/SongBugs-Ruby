@@ -1,5 +1,7 @@
 module SongBugs
   class Cursor
+    attr_reader :dragged
+
     def initialize(window)
       # @dragged remembers the bug/tile that is under control
       # of the mouse pointer.

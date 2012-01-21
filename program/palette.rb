@@ -83,14 +83,31 @@ module SongBugs
       @window.height - @left_i.height
     end
 
+    def position
+      Point[0, bottom_draw_y]
+    end
+
     # Returns the position to draw @right_i so it is toughing the far right of
     # the window.
     def east_draw_x
       @window.width - @right_i.width
     end
 
+    def bounds
+      Rectangle[position, size]
+    end
+
+    # The palette will always have the same width as the window.
+    def width
+      @window.width
+    end
+
     def height
       @middle_i.height
+    end
+
+    def size
+      Point[width, height]
     end
 
     def delete(obj)

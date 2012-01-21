@@ -5,11 +5,12 @@ module Draggable
     @parent.delete(self)
   end
 
-  # Delete this object only if it is in the palette and it
-  # is not a palette object.
+  # Delete this object only if it is in the palette, it
+  # is not a palette object, and if it's not being dragged
+  # by the mouse.
   def delete_if_in_palette
     set_offset
-    if @position.inside?(@parent.palette)
+    if (not @in_palette) and (not cursor.dragged == self) and (@position.inside?(@parent.palette.bounds))
       delete
     end
   end
@@ -22,6 +23,7 @@ module Draggable
 
   def tick
     set_offset
+    delete_if_in_palette
     @image.draw(@window, @position + @offset)
   end
 
@@ -36,5 +38,9 @@ module Draggable
 
   def in_palette?
     @in_palette
+  end
+
+  def cursor
+    @parent.window.cursor
   end
 end
