@@ -69,7 +69,7 @@ module SongBugs
       # key was pressed, e.g. up arrow will face the bug up, and the left
       # arrow will orient it left. Any other keys are ignored.
       whenever Rubydraw::Events::KeyPressed, @window do |event|
-        if cursor.inside?(button_bounds)
+        if cursor.inside?(bounds)
           k = event.key
           rbd_key = Rubydraw::Key
           if k == rbd_key::UpArrow
@@ -85,6 +85,17 @@ module SongBugs
 
         update_image
       end
+    end
+
+    def tick
+      super
+      #puts @parent.playing
+      self
+    end
+
+    # Returns the tile that this bug is currently on top of.
+    def tile
+      @parent.tile_at(@position)
     end
 
     def width

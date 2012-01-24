@@ -12,7 +12,7 @@ module SongBugs
             # Check in reverse order because the bugs/tiles that draw
             # on the top should get the opportunity to be dragged first.
             @window.draggables.reverse.each {|draggable|
-              if inside?(draggable.button_bounds)
+              if inside?(draggable.bounds)
                 container = @window.world.board
                 container = @window if not container
                 if draggable.in_palette?
@@ -49,13 +49,16 @@ module SongBugs
       whenever Rubydraw::Events::MouseReleased, window do
         @dragged = nil
       end
+      whenever Rubydraw::Events::KeyReleased, window do
+        @dragged = nil
+      end
     end
 
     # The only thing happening here is that @dragged sets its
     # position to the cursor position, on a snap-to grid.
     def tick
       if dragging?
-        @dragged.position = Point[x.floor_to(@dragged.width), y.floor_to(@dragged.height)]
+        @dragged.world_position = Point[x.floor_to(@dragged.width), y.floor_to(@dragged.height)]
       end
     end
 

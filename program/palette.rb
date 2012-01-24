@@ -5,8 +5,8 @@ module SongBugs
     attr_reader :children, :window
     alias draggables children
 
-    def initialize(window, world)
-      @window, @world = window, world
+    def initialize(window, world, board)
+      @window, @world, @board = window, world, board
       @left_i, @middle_i, @right_i = %w{left middle right}.collect {|elem| Rubydraw::Image.new(IMG_PATH + "palette/#{elem}.png")}
       @draggables = []
       padding = 20
@@ -19,15 +19,10 @@ module SongBugs
     # Create all the objects in the palette (all the bugs and tiles)
     def initialize_children
       @children = []
-      y_pos = (bottom_draw_y + height / 2) - (TileSize.y / 2)
-      @children << Bug.new(self, Point[@alignment[1], y_pos], true)
-      @children << Tile.new(self, Point[@alignment[2], y_pos], :c4, true)
-      @children << Tile.new(self, Point[@alignment[3], y_pos], :d4, true)
-      @children << Tile.new(self, Point[@alignment[4], y_pos], :e4, true)
-      @children << Tile.new(self, Point[@alignment[5], y_pos], :f4, true)
-      @children << Tile.new(self, Point[@alignment[6], y_pos], :g4, true)
-      @children << Tile.new(self, Point[@alignment[7], y_pos], :a4, true)
-      @children << Tile.new(self, Point[@alignment[8], y_pos], :b4, true)
+      y_pos = (bottom_draw_y + height / 2)
+      @children << Bug.new(self, Point[@alignment[1], y_pos] / SongBugs::TileSize, true)
+      i = 2
+      [:c4, :d4, :e4, :f4, :g4, :a4, :b4].each {|note_sym| @children << Tile.new(self, Point[@alignment[i], y_pos] / SongBugs::TileSize, note_sym, true); i += 1}
     end
 
     # Slide the palette up, down, or don't slide depending
@@ -125,6 +120,10 @@ module SongBugs
 
     def palette
       self
+    end
+
+    def playing
+      @board.playing
     end
   end
 end
