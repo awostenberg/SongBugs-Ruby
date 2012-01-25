@@ -34,14 +34,14 @@ module SongBugs
       end
     end
 
-    args = ["on", "off"].collect {|elem| Rubydraw::Image.new(IMG_PATH + "bugs/#{elem}.png")}
+    args = ["on", "off"].collect { |elem| Rubydraw::Image.new(IMG_PATH + "bugs/#{elem}.png") }
     SongBugs::Bug.initialize_img_set(*args)
 
     def initialize(parent, position, in_palette=false)
       @window, @parent, @position, @in_palette = parent.window, parent, position, in_palette
       register_actions
       @image = @@img_set[0][0]
-      @direction, @state = 0, :off
+      @direction, @timer, @state = 0, 0, :off
       update_image
     end
 
@@ -65,6 +65,7 @@ module SongBugs
           end
         end
       end
+
       # This little chunk of code rotates the bug depending on which arrow
       # key was pressed, e.g. up arrow will face the bug up, and the left
       # arrow will orient it left. Any other keys are ignored.
@@ -87,32 +88,51 @@ module SongBugs
       end
     end
 
+    # Complain about how hot the tile this bug is
+    # on top of. They have feelings.
     def complain
-      rand(5).times do
+      # random number from 1 to 4
+      (rand(4) + 1).times do
         excl = rand(3)
         rnd = [rand(5) - 1, 0].max
         if rnd == 0
-          print "GET ME OFF!"
+          print "GET ME OFF"
         elsif rnd < 3
           print "HOT"
         else
           print "OW"
         end
-        excl.times {print "!"}
+        excl.times { print "!" }
         print " "
       end
       puts
     end
 
+    # Different from Bug#tick because instead of being called
+    # every time the window updates, it is called when the bug
+    # needs to move or play the tile it is on.
+    def step
+      if tile
+        if tile.position
+          # Tell the user how excruciatingly hot the tile under
+          # the bug is!
+          complain
+        end
+      end
+    end
+
     def tick
       super
       unless @in_palette
-        if tile
-          tp = tile.position
-          if tp
-            complain
+        if @parent.playing
+          if @timer >= 10
+            @timer = 0
+            step
+          else
+            @timer += 1
           end
         else
+          @timer = 0
         end
       end
       self
