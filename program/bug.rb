@@ -87,9 +87,34 @@ module SongBugs
       end
     end
 
+    def complain
+      rand(5).times do
+        excl = rand(3)
+        rnd = [rand(5) - 1, 0].max
+        if rnd == 0
+          print "GET ME OFF!"
+        elsif rnd < 3
+          print "HOT"
+        else
+          print "OW"
+        end
+        excl.times {print "!"}
+        print " "
+      end
+      puts
+    end
+
     def tick
       super
-      #puts @parent.playing
+      unless @in_palette
+        if tile
+          tp = tile.position
+          if tp
+            complain
+          end
+        else
+        end
+      end
       self
     end
 

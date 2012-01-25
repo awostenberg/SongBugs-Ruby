@@ -58,11 +58,17 @@ module SongBugs
     # Returns an array of only the tiles in the world. If include_palette
     # is true, then it will also include those in the palette.
     def tiles(include_palette=false)
-      result = @draggables
+      result = @draggables.dup
       if include_palette
         result += @palette
       end
       result.keep_if {|draggable| draggable.kind_of?(Tile)}
+    end
+
+    # Returns the tile at the given tile coordinate.
+    def tile_at(pos)
+      tiles.each {|t| return t if t.position == pos}
+      return nil
     end
   end
 end
