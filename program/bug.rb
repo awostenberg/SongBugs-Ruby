@@ -15,7 +15,7 @@ module SongBugs
     # Also, +@@img_set+ is a class variable because if it were an
     # instance variable, every single Bug would unnecessarily have
     # its own image set. There only needs to be one! This also
-    # introduces the possibillity of easily implementing some sort
+    # introduces the possibility of easily implementing some sort
     # of "texture pack".
     def self.initialize_img_set(base_on, base_off)
       # 2DArray might actually work better for this.
@@ -108,33 +108,101 @@ module SongBugs
       puts
     end
 
+    # Move the bug in the given direction (should be
+    # a point representing the x and y distance)
+    def move(direction)
+      @position += direction
+    end
+
+    def directions
+      {0=>:north, 1=>:east, 2=>:south, 3=>:west}
+    end
+
+    # Returns the world positions in front, to the left and
+    # to the right of the bug.
+    def positions
+      relative_positions = []
+      # As directional positions:
+      # -1 = the bug's left
+      # 0  = the bug's front
+      # 1  = the bug's right
+      -1.upto(1) {|i|
+        n = i + @direction
+        if n >= 4
+          n = 0
+        end
+        relative_positions << n
+      }
+      # As relative positions:
+      # 0 = to the north of the bug
+      # 1 = to the east of the bug
+      # 2 = to the south of the bug
+      # 3 = to the west of the bug
+      relative_positions
+      # A translation from relative positions to the offsets needed
+      # to get the absolute position.
+      changes = [
+        Point[0, -1],   # north (0)
+        Point[1, 0],    # east (1)
+        Point[0, 1],    # south (2)
+        Point[-1, 0]    # west (3)
+      ]
+      # Calculate the absolute positions.
+      result = {}
+      relative_positions.each {|p|
+        if p < 0
+          p = 3
+        end
+        result[directions[p]] = @position + changes[p]
+      }
+      result
+    end
+
+    # Move and turn the bug in order to get it on the tile either
+    # in front, or to the left/right of it. Returns true or false
+    # depending on if it moved or not.
+    def move_if_needed
+      positions.each {|dir, pos|
+        t = tile_at(pos)
+        if t
+          @direction, @position = directions.invert[dir], pos
+          t.on
+          return true
+        end
+      }
+      return false
+    end
+
     # Different from Bug#tick because instead of being called
     # every time the window updates, it is called when the bug
     # needs to move or play the tile it is on.
     def step
-      if tile
-        if tile.position
-          # Play the tile that this bug is on top of.
-          tile.on
-        end
-      end
+      move_if_needed
     end
 
     def tick
       super
-      begin
-        if (not @in_palette) and @parent.playing and tile.finished?
-          step
-        end
-      rescue NameError
-        # This happens when the bug is not on a tile or the palette,
-        # and the song is playing.
+      if (not @in_palette) and @parent.playing and tile_finished?
+        step
       end
+    end
+
+    def tile_finished?
+      begin
+        tile.finished?
+      rescue NameError
+        true
+      end
+    end
+
+    # Returns the tile at pos
+    def tile_at(pos)
+      @parent.tile_at(pos)
     end
 
     # Returns the tile that this bug is currently on top of.
     def tile
-      @parent.tile_at(@position)
+      tile_at(@position)
     end
 
     def width
