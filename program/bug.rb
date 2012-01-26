@@ -166,6 +166,9 @@ module SongBugs
         t = tile_at(pos)
         if t
           @direction, @position = directions.invert[dir], pos
+          # Update the image so that the user actually sees the bug
+          # turning if it did.
+          update_image
           t.on
           return true
         end
@@ -177,7 +180,15 @@ module SongBugs
     # every time the window updates, it is called when the bug
     # needs to move or play the tile it is on.
     def step
-      move_if_needed
+      move_if_needed; return self
+    end
+
+    # Move to the top layer. Do nothing if in the palette.
+    def move_to_top
+      unless @in_palette
+        delete
+        @parent.add_draggable(self)
+      end
     end
 
     def tick
@@ -185,6 +196,7 @@ module SongBugs
       if (not @in_palette) and @parent.playing and tile_finished?
         step
       end
+      move_to_top
     end
 
     def tile_finished?
