@@ -61,12 +61,26 @@ module SongBugs
       NoteTable[@note][0]
     end
 
-    # Later, this method will play the tile's note.
+    # Play the tile's note.
     def on
-      sound.play
+      @snd = sound.dup
+      @snd.play
     end
 
+    # Stop playing
     def off
+      if not finished?
+        @snd.stop
+      end
+    end
+
+    # Returns true if the note is finished playing its note
+    def finished?
+      begin
+        not @snd.playing?
+      rescue NameError
+        true
+      end
     end
 
     def tile?

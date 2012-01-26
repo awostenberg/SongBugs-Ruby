@@ -114,28 +114,22 @@ module SongBugs
     def step
       if tile
         if tile.position
-          # Tell the user how excruciatingly hot the tile under
-          # the bug is!
-          complain
+          # Play the tile that this bug is on top of.
+          tile.on
         end
       end
     end
 
     def tick
       super
-      unless @in_palette
-        if @parent.playing
-          if @timer >= 10
-            @timer = 0
-            step
-          else
-            @timer += 1
-          end
-        else
-          @timer = 0
+      begin
+        if (not @in_palette) and @parent.playing and tile.finished?
+          step
         end
+      rescue NameError
+        # This happens when the bug is not on a tile or the palette,
+        # and the song is playing.
       end
-      self
     end
 
     # Returns the tile that this bug is currently on top of.

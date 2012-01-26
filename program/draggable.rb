@@ -9,7 +9,7 @@ module Draggable
   # is not a palette object, and if it's not being dragged
   # by the mouse.
   def delete_if_in_palette
-    if (not @in_palette) and (not cursor.dragged == self) and (@position.inside?(@parent.palette.bounds))
+    if (not @in_palette) and (not cursor.dragged == self) and (world_position.inside?(@parent.palette.bounds))
       delete
     end
   end
