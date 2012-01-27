@@ -41,7 +41,7 @@ module SongBugs
       @window, @parent, @position, @in_palette = parent.window, parent, position, in_palette
       register_actions
       @image = @@img_set[0][0]
-      @direction, @timer, @state = 0, 0, :off
+      @direction, @timer, @state, @old_playing = 0, 0, :off, false
       update_image
     end
 
@@ -196,7 +196,12 @@ module SongBugs
       if (not @in_palette) and @parent.playing and tile_finished?
         step
       end
-      move_to_top
+      # If the song has just started/stopped playing (we only
+      # really care about the former)
+      if @old_playing ^ @parent.playing
+        move_to_top
+      end
+      @old_playing = @parent.playing
     end
 
     def tile_finished?

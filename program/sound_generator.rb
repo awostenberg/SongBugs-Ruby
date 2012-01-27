@@ -12,7 +12,8 @@ module SongBugs
         :f4 => 349.23,
         :g4 => 392.00,
         :a4 => 440.00,
-        :b4 => 493.88
+        :b4 => 493.88,
+        :rest => 500      # this can be anything, really.
     }
 
     def self.write_all_tones_in(path)
@@ -20,7 +21,12 @@ module SongBugs
         # Open the appropriate file.
         f = File.open("#{path}/#{key}.wav", "wb")
         # This is where synthesize (http://rubygems.org/gems/synthesize) comes in.
-        s = Synthesize.new(val, NoteAmplitude, NoteDuration)
+        if key == :rest
+          amplitude = 0
+        else
+          amplitude = NoteAmplitude
+        end
+        s = Synthesize.new(val, amplitude, NoteDuration)
         # Sine waves are nice and smooth!
         s.sin
         # Finally, write the sound to a file, in the form of a +.wav+ file.

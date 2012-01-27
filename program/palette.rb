@@ -10,7 +10,7 @@ module SongBugs
       @left_i, @middle_i, @right_i = %w{left middle right}.collect {|elem| Rubydraw::Image.new(IMG_PATH + "palette/#{elem}.png")}
       @draggables = []
       padding = 20
-      @alignment = Alignment.new(padding, window.width - padding, 8)
+      @alignment = Alignment.new(padding, window.width - padding, 9)
       @offset, @slide_speed = 0, 10
       initialize_children
       show
@@ -22,7 +22,7 @@ module SongBugs
       y_pos = (bottom_draw_y + height / 2)
       @children << Bug.new(self, Point[@alignment[1], y_pos] / SongBugs::TileSize, true)
       i = 2
-      [:c4, :d4, :e4, :f4, :g4, :a4, :b4].each {|note_sym| @children << Tile.new(self, Point[@alignment[i], y_pos] / SongBugs::TileSize, note_sym, true); i += 1}
+      [:c4, :d4, :e4, :f4, :g4, :a4, :b4, :rest].each {|note_sym| @children << Tile.new(self, Point[@alignment[i], y_pos] / SongBugs::TileSize, note_sym, true); i += 1}
     end
 
     # Slide the palette up, down, or don't slide depending

@@ -17,7 +17,8 @@ module SongBugs
         :f4 => c::Yellow,
         :g4 => c.new(191, 255, 0),
         :a4 => c::Green,
-        :b4 => c::Cyan
+        :b4 => c::Cyan,
+        :rest => c::Black
     }
 
     # Will later be filled with instances of Rubydraw::Surface.
